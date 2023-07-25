@@ -39,7 +39,6 @@ const validationMovieById = celebrate({
   }),
 });
 
-
 module.exports = {
   validationCreatUser,
   validationLogin,

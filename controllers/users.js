@@ -25,7 +25,7 @@ const getUserInfo = (req, res, next) => {
 const upDateUser = (req, res, next) => {
   User.findByIdAndUpdate(req.user._id, req.body, { new: true, runValidators: true })
     .orFail(() => {
-      throw new NotFound('Пользователь не найден')
+      throw new NotFoundError('Пользователь не найден');
     })
     .then((userInfo) => {
       res.status(200).send(userInfo);
@@ -104,7 +104,6 @@ const login = (req, res, next) => {
 const getLogout = (req, res) => {
   res.clearCookie('jwt').send({ message: 'Вы вышли из профиля' });
 };
-
 
 module.exports = {
   upDateUser,

@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
 
-
 const userSchema = new mongoose.Schema({
   email: {
     type: String,
@@ -22,7 +21,7 @@ const userSchema = new mongoose.Schema({
     minlength: 2,
     maxlength: 30,
   },
-})
+});
 
 userSchema.methods.toJSON = function toJSON() {
   const user = this.toObject();

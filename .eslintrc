@@ -1,5 +1,6 @@
 {
   "extends": "airbnb-base",
+  "plugins": ["import", "node", "promise", "jsx-a11y", "react", "react-hooks"],
   "rules": {
     "no-underscore-dangle": [
       "error",
