@@ -8,11 +8,12 @@ const cors = require('cors');
 const routes = require('./routes');
 const errorHandler = require('./meddlwares/error-handler');
 const { errorLogger, requestLogger } = require('./meddlwares/logger');
+const limiter = require('./meddlwares/rateLimiter');
+const { DB_URL, PORT } = require('./utilits/constants')
 
 const app = express();
 app.use(helmet());
-
-const { PORT = 3000, DB_URL = 'mongodb://0.0.0.0:27017/bitfilmsdb' } = process.env;
+app.use(limiter);
 
 mongoose.connect(DB_URL, {
   useNewUrlParser: true,
@@ -29,11 +30,6 @@ app.use(cookieParser());
 
 app.use(requestLogger);
 
-app.get('/crash-test', () => {
-  setTimeout(() => {
-    throw new Error('Сервер сейчас упадёт');
-  }, 0);
-});
 app.use(routes);
 app.use(errorLogger);
 app.use(errors());

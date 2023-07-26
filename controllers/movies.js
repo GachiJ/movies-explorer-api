@@ -45,7 +45,7 @@ const createMovie = (req, res, next) => {
     .then((movie) => res.status(201).send(movie))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new BadRequestError('Переданы некорректные данные при создании карточки'));
+        next(new BadRequestError('Переданы некорректные данные при создании фильма'));
       } else {
         next(err);
       }
@@ -54,17 +54,17 @@ const createMovie = (req, res, next) => {
 
 const deleteMovieById = (req, res, next) => {
   if (!mongoose.Types.ObjectId.isValid(req.params._id)) {
-    return next(new BadRequestError('Недействительный идентификатор карты'));
+    return next(new BadRequestError('Недействительный идентификатор фильма'));
   }
 
   return Movie.findById(req.params._id)
     .then((movie) => {
       if (!movie) {
-        throw new NotFoundError('Карточка не найдена');
+        throw new NotFoundError('Фильм не найдена');
       }
 
       if (movie.owner.toString() !== req.user._id) {
-        throw new ForbiddenError('Вы не имеете права удалять чужую карту');
+        throw new ForbiddenError('Вы не имеете права удалять чужой фильм');
       }
 
       return Movie.findByIdAndDelete(req.params._id);
