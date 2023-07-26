@@ -24,6 +24,15 @@ const getUserInfo = (req, res, next) => {
 
 const upDateUser = (req, res, next) => {
   const { email, name } = req.body;
+  const updateFields = {};
+
+  if (name) {
+    updateFields.name = name;
+  }
+
+  if (email) {
+    updateFields.email = email;
+  }
 
   User.findByIdAndUpdate(req.user._id, { email, name }, { new: true, runValidators: true })
     .orFail(() => {
@@ -71,7 +80,7 @@ const login = (req, res, next) => {
 
   User.findOne({ email })
     .select('+password')
-    .orFail(new Error('User not found'))
+    .orFail(() => new AuthError('Ошибка авторизации'))
     .then((user) => {
       bcrypt.compare(String(password), user.password)
         .then((isValidUser) => {
@@ -94,12 +103,13 @@ const login = (req, res, next) => {
         });
     })
     .catch((err) => {
-      if (err.message === 'User not found') {
-        next(new AuthError('Ошибка авторизации'));
+      if (err.name === 'AuthError') {
+        next(err);
       } else if (err.name === 'ValidationError') {
         next(new BadRequestError('Переданы некорректные данные'));
+      } else {
+        next(new InternalServerError('Внутрення серверная ошибка'));
       }
-      next(new InternalServerError('Внутрення серверная ошибка'));
     });
 };
 
