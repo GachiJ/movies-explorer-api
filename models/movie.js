@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { urlPattern } = require('../meddlwares/validation');
 
 const movieSchema = new mongoose.Schema({
   country: {
@@ -24,14 +25,26 @@ const movieSchema = new mongoose.Schema({
   image: {
     type: String,
     required: true,
+    validate: {
+      validator: (v) => urlPattern.test(v),
+      message: 'Неверный формат URL для image',
+    },
   },
   trailerLink: {
-    type: URL,
+    type: String,
     required: true,
+    validate: {
+      validator: (v) => urlPattern.test(v),
+      message: 'Неверный формат URL для trailerLink',
+    },
   },
   thumbnail: {
     type: String,
     required: true,
+    validate: {
+      validator: (v) => urlPattern.test(v),
+      message: 'Неверный формат URL для thumbnail',
+    },
   },
   owner: {
     type: mongoose.Types.ObjectId,

@@ -23,7 +23,9 @@ const getUserInfo = (req, res, next) => {
 };
 
 const upDateUser = (req, res, next) => {
-  User.findByIdAndUpdate(req.user._id, req.body, { new: true, runValidators: true })
+  const { email, name } = req.body;
+
+  User.findByIdAndUpdate(req.user._id, { email, name }, { new: true, runValidators: true })
     .orFail(() => {
       throw new NotFoundError('Пользователь не найден');
     })
