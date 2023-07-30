@@ -9,7 +9,7 @@ const routes = require('./routes');
 const errorHandler = require('./meddlwares/error-handler');
 const { errorLogger, requestLogger } = require('./meddlwares/logger');
 const limiter = require('./meddlwares/rateLimiter');
-const { DB_URL, PORT } = require('./utilits/constants')
+const { DB_URL, PORT } = require('./utilits/constants');
 
 const app = express();
 app.use(helmet());
