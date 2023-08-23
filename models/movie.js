@@ -46,10 +46,6 @@ const movieSchema = new mongoose.Schema({
       message: 'Неверный формат URL для thumbnail',
     },
   },
-  owner: {
-    type: mongoose.Types.ObjectId,
-    required: true,
-  },
   movieId: {
     type: Number,
     required: true,
