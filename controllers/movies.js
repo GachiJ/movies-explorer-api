@@ -54,11 +54,11 @@ const createMovie = (req, res, next) => {
 };
 
 const deleteMovieById = (req, res, next) => {
-  if (!mongoose.Types.ObjectId.isValid(req.params.movieId)) {
+  if (!mongoose.Types.ObjectId.isValid(req.params._id)) {
     return next(new BadRequestError('Недействительный идентификатор фильма'));
   }
 
-  return Movie.findById(req.params.movieId)
+  return Movie.findById(req.params._id)
     .then((movie) => {
       if (!movie) {
         throw new NotFoundError('Фильм не найдена');
@@ -68,7 +68,7 @@ const deleteMovieById = (req, res, next) => {
         throw new ForbiddenError('Вы не имеете права удалять чужой фильм');
       }
 
-      return Movie.deleteOne(req.params.movieId);
+      return Movie.findByIdAndDelete(req.params._id);
     })
     .then((movie) => {
       res.status(200).send(movie);
