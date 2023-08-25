@@ -10,7 +10,8 @@ const AuthError = require('../meddlwares/errors/AuthError');
 const { NODE_ENV, JWT_SECRET } = process.env;
 
 const getUserInfo = (req, res, next) => {
-  User.findById(req.user._id)
+  const owner = req.user._id;
+  User.findById(owner)
     .then((user) => {
       if (!user) {
         return next(new NotFoundError('Пользователь не найден'));
