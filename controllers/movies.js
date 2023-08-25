@@ -29,8 +29,6 @@ const createMovie = (req, res, next) => {
 
   const owner = req.user._id;
 
-  console.log(owner);
-
   Movie.create({
     country,
     director,
@@ -56,21 +54,21 @@ const createMovie = (req, res, next) => {
 };
 
 const deleteMovieById = (req, res, next) => {
-  if (!mongoose.Types.ObjectId.isValid(req.params._id)) {
+  if (!mongoose.Types.ObjectId.isValid(req.params.movieId)) {
     return next(new BadRequestError('Недействительный идентификатор фильма'));
   }
 
-  return Movie.findById(req.params._id)
+  return Movie.findById(req.params.movieId)
     .then((movie) => {
       if (!movie) {
         throw new NotFoundError('Фильм не найдена');
       }
 
-      if (movie.owner.toString() !== req.user._id) {
+      if (movie.owner.toString() !== req.user.movieId) {
         throw new ForbiddenError('Вы не имеете права удалять чужой фильм');
       }
 
-      return Movie.findByIdAndDelete(req.params._id);
+      return Movie.findByIdAndDelete(req.params.movieId);
     })
     .then((movie) => {
       res.status(200).send(movie);
