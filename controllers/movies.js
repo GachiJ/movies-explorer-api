@@ -42,7 +42,20 @@ const createMovie = (req, res, next) => {
     movieId,
     owner,
   })
-    .then((movie) => res.status(201).send(movie))
+    .then((movie) => res.status(201).send({
+      _id: movie._id,
+      country: movie.country,
+      director: movie.director,
+      duration: movie.duration,
+      year: movie.year,
+      description: movie.description,
+      image: movie.image,
+      trailer: movie.trailer,
+      nameRU: movie.nameRU,
+      nameEN: movie.nameEN,
+      thumbnail: movie.thumbnail,
+      movieId: movie.movieId,
+    }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new BadRequestError('Переданы некорректные данные при создании фильма'));
