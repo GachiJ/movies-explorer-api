@@ -64,7 +64,7 @@ const deleteMovieById = (req, res, next) => {
         throw new NotFoundError('Фильм не найдена');
       }
 
-      if (movie.owner.toString() !== req.user.movieId) {
+      if (movie.owner.toString() !== req.user._id) {
         throw new ForbiddenError('Вы не имеете права удалять чужой фильм');
       }
 
