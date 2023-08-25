@@ -26,7 +26,6 @@ const createMovie = (req, res, next) => {
     thumbnail,
     movieId,
   } = req.body;
-  const owner = req.user._id;
 
   Movie.create({
     country,
@@ -40,12 +39,12 @@ const createMovie = (req, res, next) => {
     nameEN,
     thumbnail,
     movieId,
-    owner,
+    owner: req.user._id,
   })
-    .then((movie) => console.log(movie)/* res.status(201).send(movie) */)
+    .then((movie) => res.status(201).send(movie))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(/* new BadRequestError('Переданы некорректные данные при создании фильма') */);
+        next(new BadRequestError('Переданы некорректные данные при создании фильма'));
       } else {
         next(err);
       }
